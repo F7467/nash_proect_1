@@ -1,2 +1,23 @@
-print ("Nika loh")
-print("true")
+import pygame
+import sys
+
+pygame.init()
+
+screen = pygame.display.set_mode((1800, 600))
+pygame.display.set_caption("HUARIO")
+clock = pygame.time.Clock()
+
+GRAVITY = 1
+
+#say cheese
+def main():
+    print("Nika loh")
+    print("true")
+    nika_ne_smozhet_nihuya_sdelayet = True
+    for i in range(100):
+        if nika_ne_smozhet_nihuya_sdelayet:
+            print("NIKU EBALI TALIBI")
+        else:
+            print("NIKU EBALI TALIBI")
+
+#⚒️⚒️⚒️⚒️⚒️🐈🐈🐈🐈🐈🤙🤙🤙🤙🤙🥶🥶🥶🥶🥶🙆🙆🙆‍♂️🙆‍♂️🙆‍♀️🙆‍♀️
