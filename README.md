@@ -1,5 +1,5 @@
 # nash_proect_1
-##AI
+## AI
 
 ---
 
@@ -9,7 +9,7 @@ blablabla***blablabla***blablabla
 
 ---
 
->####blablablabla
+>#### blablablabla
 > - blablabla
 > - blabla
 >>blablabla
