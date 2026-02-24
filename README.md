@@ -39,8 +39,8 @@ git pull
 python -m venv .venv
 ```
 4. Активуйте
-   * Windows (PowerShell): ``.\.venv\Scripts\Activate.ps1``
-   * Mac/Linux: ``source .venv/bin/activate``
+   * Windows (PowerShell): ```.\.venv\Scripts\Activate.ps1```
+   * Mac/Linux: ```source .venv/bin/activate```
 5. Встановіть необхідні бібліотеки
 ```bash
 pip install -r requirements.txt
