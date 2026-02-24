@@ -9,9 +9,11 @@
 ---
 
 <div allign="center"> 
-  <a href="https://docs.python.org/3/">
-    <img src="https://img.shields.io/badge/status-stable-green.svg?style=flat-square"
-      alt="Python" />
+  <a href="https://www.python.org/">
+    <img src="https://img.shields.io/badge/Python-3.x-blue?style=flat-square&logo=python&logoColor=white" alt="Python Version" />
+  </a>
+  <a href="https://www.python.org/">
+    <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python Logo" />
   </a>
 </div>
 
