@@ -3,7 +3,7 @@
 </h1>
 
 <div align="center">
-  <strong>Analysing AI</strong>
+  <strong>Analysing AI</strong><br>
   ⚒️🤖💬
 </div>
 
