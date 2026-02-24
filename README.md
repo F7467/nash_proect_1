@@ -31,4 +31,9 @@ blablabla***blablabla***blablabla
 
 blabla `bla`
 
-`` python  bla bla``
+```javascript
+var i;
+for (i = 0; i < 5; i++) {
+  console.log(i);
+}
+```
