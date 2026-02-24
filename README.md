@@ -13,7 +13,17 @@
   </a>
 </div>
 
-## Інструкція для завантаження всіх dependencies
+## Table of contents
+1. [Table of contents](#table-of-contents)
+2. [Prerequisites](#prerequisites)
+3. [Встановлення та налаштування](#встановлення-та-налаштування)
+
+## Prerequisites
+Перед початком переконайтеся, що у вас встановлені:
+* **Git** — [завантажити](https://git-scm.com/)
+* **Python** — [завантажити](https://www.python.org/)
+
+## Встановлення та налаштування
 
 0. **Відкрийте термінал або командний рядок (Terminal / CMD / PowerShell).**
 1. Зайдіть в папку проекту
@@ -36,42 +46,3 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 ---
-
-
-
-
-
-
-
-
-
-
-
->#### blablablabla
-> - blablabla
-> - blabla
->>blablabla
->
->*blabla* bla bla
-
----
-
-1. bla
-2. blabla
-3. blablabla
-4. blablablabla
-
-* 12\.bla
-* blabla
-* bla
-
----
-
-blabla `bla`
-
-```javascript
-var i;
-for (i = 0; i < 5; i++) {
-  console.log(i);
-}
-```
