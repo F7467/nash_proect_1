@@ -1,4 +1,6 @@
-<h1 allign="center">SKELAR AI TEST TASK</h1>
+<h1 allign="center">
+  <strong>SKELAR AI TEST TASK</strong>
+</h1>
 
 ---
 <h2 allign="center">AI</h2>
@@ -6,7 +8,12 @@
 <h3 allign="center">⚒️🤖💬</h3>
 ---
 
-<div allign="center">![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)</div>
+<div allign="center"> 
+  <a href="https://docs.python.org/3/">
+    <img src="https://img.shields.io/badge/status-stable-green.svg?style=flat-square"
+      alt="Python" />
+  </a>
+</div>
 
 ---
 
