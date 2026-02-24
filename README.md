@@ -3,9 +3,7 @@
 </h1>
 
 <div align="center">
-  <strong>Analysing AI</strong>
-</div>
-<div align="center">
+  <strong>Analysing AI</strong><br>
   ⚒️🤖💬
 </div>
 
@@ -15,7 +13,17 @@
   </a>
 </div>
 
-## Інструкція для завантаження всіх dependencies
+## Table of contents
+1. [Table of contents](#table-of-contents)
+2. [Prerequisites](#prerequisites)
+3. [Встановлення та налаштування](#встановлення-та-налаштування)
+
+## Prerequisites
+Перед початком переконайтеся, що у вас встановлені:
+* **Git** — [завантажити](https://git-scm.com/)
+* **Python** — [завантажити](https://www.python.org/)
+
+## Встановлення та налаштування
 
 0. **Відкрийте термінал або командний рядок (Terminal / CMD / PowerShell).**
 1. Зайдіть в папку проекту
@@ -31,49 +39,16 @@ git pull
 python -m venv .venv
 ```
 4. Активуйте
-   * Windows (PowerShell): ``.\.venv\Scripts\Activate.ps1``
-   * Mac/Linux: ``source .venv/bin/activate``
+   * Windows (PowerShell): 
+   ```powershell
+   .\.venv\Scripts\Activate.ps1
+   ```
+   * Mac/Linux: 
+   ```bash
+   source .venv/bin/activate
+   ```
 5. Встановіть необхідні бібліотеки
 ```bash
 pip install -r requirements.txt
 ```
 ---
-
-
-
-
-
-
-
-
-
-
-
->#### blablablabla
-> - blablabla
-> - blabla
->>blablabla
->
->*blabla* bla bla
-
----
-
-1. bla
-2. blabla
-3. blablabla
-4. blablablabla
-
-* 12\.bla
-* blabla
-* bla
-
----
-
-blabla `bla`
-
-```javascript
-var i;
-for (i = 0; i < 5; i++) {
-  console.log(i);
-}
-```
