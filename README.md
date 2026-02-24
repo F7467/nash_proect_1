@@ -15,22 +15,25 @@
   </a>
 </div>
 
----
-
 ## Інструкція для завантаження всіх dependencies
 
-1. Оновіть всі файли.
+0. **Відкрийте термінал або командний рядок (Terminal / CMD / PowerShell).**
+1. Зайдіть в папку проекту
+```bash
+cd nash_proect_1
+```
+2. Оновіть всі файли.
 ```bash
 git pull
 ```
-2. Налаштуйте `venv`.
+3. Налаштуйте `venv`.
 ```bash
 python -m venv .venv
 ```
-3. Активуйте
-   * Windows (PowerShell): ``.\.venv\Scripts\activate``
+4. Активуйте
+   * Windows (PowerShell): ``.\.venv\Scripts\Activate.ps1``
    * Mac/Linux: ``source .venv/bin/activate``
-4. Встановіть необхідні бібліотеки
+5. Встановіть необхідні бібліотеки
 ```bash
 pip install -r requirements.txt
 ```
