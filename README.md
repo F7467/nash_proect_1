@@ -3,12 +3,14 @@
 </h1>
 
 <div align="center">
-  <strong>Analysing AI</strong>\
-
+  <strong>Analysing AI</strong>
   ⚒️🤖💬
+</div>
 
-![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-
+<div align="center"> 
+  <a href="https://www.python.org/">
+    <img src="https://img.shields.io/badge/Python-3.x-blue?style=flat-square&logo=python&logoColor=white" alt="Python Version" />
+  </a>
 </div>
 
 ## Інструкція для завантаження всіх dependencies
