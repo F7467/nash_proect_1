@@ -1,11 +1,10 @@
-<div align="center">#SKELAR AI *TEST* TASK
+#SKELAR AI *TEST* TASK
 ---
 ## AI
 
 ### 
 ---
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-</div>
 ---
 1. Оновіть всі файли.
 ```bash
