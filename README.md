@@ -1,19 +1,20 @@
-<h1 allign="center">
+<h1 align="center">
   <strong>SKELAR AI TEST TASK</strong>
 </h1>
 
 ---
-<h2 allign="center">AI</h2>
 
-<h3 allign="center">⚒️🤖💬</h3>
+<h2 align="center">AI</h2>
+
+<h3 align="center">
+  ⚒️🤖💬
+</h3>
+
 ---
 
-<div allign="center"> 
+<div align="center"> 
   <a href="https://www.python.org/">
     <img src="https://img.shields.io/badge/Python-3.x-blue?style=flat-square&logo=python&logoColor=white" alt="Python Version" />
-  </a>
-  <a href="https://www.python.org/">
-    <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python Logo" />
   </a>
 </div>
 
