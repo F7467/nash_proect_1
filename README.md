@@ -3,19 +3,11 @@
 </h1>
 
 <div align="center">
-  <strong>Analysing AI</strong>
+  <strong>Analysing AI</strong>\
+
   ⚒️🤖💬
 
-
-
-<a href="https://www.python.org/">
-  <img src="https://img.shields.io/badge/Python-3.x-blue?style=flat-square&logo=python&logoColor=white" alt="Python Version" />
-</a>
-
-
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-![Stability](https://img.shields.io/badge/stability-experimental-orange?style=for-the-badge)
-![Code Style](https://img.shields.io/badge/code%20style-black-000000?style=for-the-badge)
 
 </div>
 
