@@ -1,16 +1,13 @@
 <h1 align="center">
-  <strong>SKELAR AI TEST TASK</strong>
+  SKELAR AI TEST TASK
 </h1>
 
----
-
-<h2 align="center">AI</h2>
-
-<h3 align="center">
+<div align="center">
+  <strong>Analysing AI</strong>
+</div>
+<div align="center">
   ⚒️🤖💬
-</h3>
-
----
+</div>
 
 <div align="center"> 
   <a href="https://www.python.org/">
@@ -38,6 +35,16 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 ---
+
+
+
+
+
+
+
+
+
+
 
 >#### blablablabla
 > - blablabla
