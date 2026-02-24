@@ -1,13 +1,27 @@
-# nash_proect_1
+<div align="center">#SKELAR AI *TEST* TASK
+---
 ## AI
 
+### 
 ---
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+</div>
 ---
-blablablablabla**blabla**blablabla  
-bla*bla*blablabla  
-blablabla***blablabla***blablabla
-
+1. Оновіть всі файли.
+```bash
+git pull
+```
+2. Налаштуйте `venv`.
+```bash
+python -m venv .venv
+```
+3. Активуйте
+   * Windows (PowerShell): ``.\.venv\Scripts\activate``
+   * Mac/Linux: ``source .venv/bin/activate``
+4. Встановіть необхідні бібліотеки
+```bash
+pip install -r requirements.txt
+```
 ---
 
 >#### blablablabla
