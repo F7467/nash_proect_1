@@ -1,49 +1,30 @@
 import os
+import sys
 import json
 import time
 from dotenv import load_dotenv
 import google.generativeai as genai
-from prompts import SCENARIOS
-
-from openai import OpenAI
-
-from generate import OPENAIkey
-MODEL_GEMINI = "gemini-2.5-flash"
 
 load_dotenv()
 GEMINIkey = os.getenv("GOOGLE_API_KEY")
-OPENAIkey = os.getenv("OPENAI_API_KEY")
 
 if not GEMINIkey:
-    print(" Ключі відсутні! Завершую роботу.")
-    #exit()
+    print("❌ Ключа Gemini немає. Аналізувати нічим. Завершую роботу.")
+    sys.exit(1)
 
+# Налаштовуємо модель
 genai.configure(api_key=GEMINIkey)
-
 model = genai.GenerativeModel("gemini-2.5-flash")
 
-if not OPENAIkey and not GEMINIkey:
-    print("FATAL ERROR: ДОСТУП ДО ДВУХ ШІ ЗАРАЗ ВІДСУТНІЙ!")
-    exit()
-
-if GEMINIkey:
-    genai.configure(api_key=GEMINIkey)
-    gemini_model = genai.GenerativeModel(MODEL_GEMINI)
-
-if OPENAIkey:
-    openai_client = OpenAI(api_key=OPENAIkey)
 
 def analyze_all_dialogues():
     try:
         with open("raw_data.json", "r", encoding="utf-8") as f:
             dataset = json.load(f)
-            print(f" Знайдено {len(dataset)} діалогів для аналізу!")
-    except FileNotFoundError:
-        print(" Помилка: Файл raw_data.json не знайдено!")
-        return
-    except json.JSONDecodeError:
-        print(" Помилка: raw_data.json пошкоджений або пустий.")
-        return
+            print(f"✅ Знайдено {len(dataset)} діалогів для аналізу. Погнали!")
+    except Exception as e:
+        print(f"❌ Помилка завантаження raw_data.json: {e}")
+        sys.exit(1)
 
     analyzed_results = []
 
@@ -52,11 +33,12 @@ def analyze_all_dialogues():
         dialog_text = item.get("dialog")
 
         if not dialog_text:
-            print(f" Скіпаємо ID {scenario_id} - там немає тексту діалогу.")
+            print(f"⏩ Скіпаємо ID {scenario_id} - тексту діалогу нема.")
             continue
 
-        print(f" Аналізую діалог ID {scenario_id}...")
+        print(f"⏳ Аналізую діалог ID {scenario_id}...")
 
+        # Оновлений промпт! Чітко вимагаємо agent_mistakes за вимогами ТЗ.
         analysis_prompt = f"""
         Проаналізуй діалог між клієнтом та сапортом і виведи результат ТІЛЬКИ у форматі JSON.
 
@@ -67,116 +49,130 @@ def analyze_all_dialogues():
         {{
             "intent": "payment_issue" або "technical_error" або "account_access" або "tariff_question" або "refund_request" або "other",
             "satisfaction": "satisfied" або "neutral" або "unsatisfied",
-            "quality_score": оцінка від 1 до 5 (числом),
-            "expected_mistakes": ["incorrect_info", "ignored_question", "hallucinated_info", "robotic_tone", "rude_tone", "too_short_reply", "passive_agression", "jargon_overload", "contradictory_info", "outdated_info", "overly_verbose", "assumption_based_reply", "unnecessary_escalation", "no_resolution", "long_response_time", "data_privacy_violation"] (якщо немає - порожній список [])
+            "quality_score": оцінка роботи сапорт-агента від 1 до 5 (числом),
+            "agent_mistakes": ["incorrect_info", "ignored_question", "hallucinated_info", "robotic_tone", "rude_tone", "too_short_reply", "passive_agression", "jargon_overload", "contradictory_info", "outdated_info", "overly_verbose", "assumption_based_reply", "unnecessary_escalation", "no_resolution", "long_response_time", "data_privacy_violation"] (якщо помилок немає - порожній список [])
         }}
         """
         while True:
             try:
                 response = model.generate_content(
                     analysis_prompt,
-                    generation_config={"response_mime_type": "application/json"}
+                    # Використовуємо response_mime_type для гарантованого JSON, temperature=0.1 для стабільності аналітики
+                    generation_config={"response_mime_type": "application/json", "temperature": 0.1}
                 )
                 parsed_analysis = json.loads(response.text)
                 item["ai_analysis"] = parsed_analysis
                 analyzed_results.append(item)
 
-                print(f" ID {scenario_id} успішно проаналізовано!")
-                time.sleep(6) 
-                break  
+                print(f"✅ ID {scenario_id} розкладено по поличках!")
+                time.sleep(6)  # Пауза між запитами, щоб Гугл не забанив
+                break
 
             except Exception as e:
                 error_msg = str(e)
                 if "429" in error_msg or "quota" in error_msg.lower():
-                    print(f" Гугл виставив блок (429)! Спимо 60 секунд і добиваємо ID {scenario_id}...")
+                    print(f"🛑 Гугл виставив блок (429)! Спимо 60 секунд і добиваємо ID {scenario_id}...")
                     time.sleep(60)
                 else:
-                    print(f" Критична помилка на ID {scenario_id}: {e}")
+                    print(f"❌ Критична помилка на ID {scenario_id}: {e}")
                     item["ai_analysis"] = {"error": str(e)}
                     analyzed_results.append(item)
                     break
 
     with open("analyzed_data.json", "w", encoding="utf-8") as out:
         json.dump(analyzed_results, out, indent=4, ensure_ascii=False)
-        print("\n УСІ ДАНІ УСПІШНО ПРОАНАЛІЗОВАНІ ТА ЗБЕРЕЖЕНІ В analyzed_data.json!")
+        print("\n📁 УСІ ДАНІ УСПІШНО ПРОАНАЛІЗОВАНІ ТА ЗБЕРЕЖЕНІ В analyzed_data.json!")
 
-def compare_results(analyzed_file="analyzed_data.json", prompts_file="prompts.json", output_file="comparison_report.json"):
+
+def compare_results():
     """
-    Порівнює результати ШІ з очікуваними (еталонними) даними.
+    Порівнює результати ШІ з очікуваними (еталонними) даними,
+    які вже лежать у згенерованому датасеті.
     """
-    print("\n Починаю порівняння з еталонними промптами...")
-    
+    print("\n⚖️ Починаю жорстке порівняння: очікування vs реальність (ШІ)...")
+
     try:
-        with open(analyzed_file, "r", encoding="utf-8") as f:
+        with open("analyzed_data.json", "r", encoding="utf-8") as f:
             analyzed_data = json.load(f)
-        
-        with open(prompts_file, "r", encoding="utf-8") as f:
-            prompts_data = json.load(f)
-            
-    except FileNotFoundError as e:
-        print(f" Помилка завантаження файлів для порівняння: {e}")
-        return
+    except Exception as e:
+        print(f"❌ Не можу відкрити analyzed_data.json: {e}")
+        sys.exit(1)
 
-    prompts_dict = {item["id"]: item for item in prompts_data}
     comparison_results = []
-    
     total_matches = 0
     total_fields_checked = 0
 
     for item in analyzed_data:
         scenario_id = item.get("id")
         ai_result = item.get("ai_analysis", {})
-        
+
         if "error" in ai_result:
+            print(f"⏩ Скіпаю порівняння для ID {scenario_id} через помилку аналізу.")
             continue
 
-        expected_result = prompts_dict.get(scenario_id, {}).get("expected", {})
-        
-        if not expected_result:
-            print(f" Не знайдено еталонних даних (очікувань) для ID {scenario_id}")
-            continue
+        # Беремо очікування прямо з поточного об'єкта (вони були записані туди скриптом generate.py)
+        expected_intent = item.get("intent")
+        expected_satisfaction = item.get("expected_satisfaction")
+        expected_quality_score = item.get("expected_quality_score")
+        expected_mistakes = set(item.get("agent_mistakes", []))
 
-        keys_to_compare = ["intent", "satisfaction", "quality_score"]
+        # Беремо реальність (що нааналізувала ШІ)
+        ai_intent = ai_result.get("intent")
+        ai_satisfaction = ai_result.get("satisfaction")
+        ai_quality_score = ai_result.get("quality_score")
+        ai_mistakes = set(ai_result.get("agent_mistakes", []))
+
         matches = 0
         differences = {}
 
-        for key in keys_to_compare:
-            total_fields_checked += 1
-            if str(ai_result.get(key)) == str(expected_result.get(key)):
-                matches += 1
-                total_matches += 1
-            else:
-                differences[key] = {
-                    "expected": expected_result.get(key),
-                    "ai_got": ai_result.get(key)
-                }
-
+        # 1. Порівнюємо Intent
         total_fields_checked += 1
-        ai_mistakes = set(ai_result.get("expected_mistakes", []))
-        expected_mistakes = set(expected_result.get("expected_mistakes", []))
-        
+        if str(ai_intent) == str(expected_intent):
+            matches += 1
+            total_matches += 1
+        else:
+            differences["intent"] = {"expected": expected_intent, "ai_got": ai_intent}
+
+        # 2. Порівнюємо Satisfaction
+        total_fields_checked += 1
+        if str(ai_satisfaction) == str(expected_satisfaction):
+            matches += 1
+            total_matches += 1
+        else:
+            differences["satisfaction"] = {"expected": expected_satisfaction, "ai_got": ai_satisfaction}
+
+        # 3. Порівнюємо Quality Score
+        total_fields_checked += 1
+        if str(ai_quality_score) == str(expected_quality_score):
+            matches += 1
+            total_matches += 1
+        else:
+            differences["quality_score"] = {"expected": expected_quality_score, "ai_got": ai_quality_score}
+
+        # 4. Порівнюємо Agent Mistakes
+        total_fields_checked += 1
         if ai_mistakes == expected_mistakes:
             matches += 1
             total_matches += 1
         else:
-            differences["expected_mistakes"] = {
-                "expected": list(expected_mistakes),
-                "ai_got": list(ai_mistakes)
-            }
+            differences["agent_mistakes"] = {"expected": list(expected_mistakes), "ai_got": list(ai_mistakes)}
 
         comparison_results.append({
             "id": scenario_id,
-            "expectation_reality_matches": matches,  
+            "expectation_reality_matches": matches,
             "differences": differences,
             "is_perfect_match": matches == 4
         })
 
-    with open(output_file, "w", encoding="utf-8") as out:
+    with open("comparison_report.json", "w", encoding="utf-8") as out:
         json.dump(comparison_results, out, indent=4, ensure_ascii=False)
-    
+
     accuracy = (total_matches / total_fields_checked * 100) if total_fields_checked > 0 else 0
-    print(f" Порівняння завершено! Збережено у {output_file}.")
-    print(f" Загальна точність моделі: {accuracy:.2f}%")
+    print(f"📊 Порівняння завершено! Звіт збережено у comparison_report.json.")
+    print(f"🎯 Загальна точність аналізу ШІ: {accuracy:.2f}%")
+
 
 if __name__ == "__main__":
+    # Запускаємо спочатку аналіз, потім відразу порівняння
     analyze_all_dialogues()
+    compare_results()

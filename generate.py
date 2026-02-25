@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import time
 from dotenv import load_dotenv
@@ -6,7 +7,8 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import google.generativeai as genai
 
-from prompts import SCENARIOS
+# УВАГА: імпортуємо функцію генерації, а не статичний список!
+from prompts import create_random_scenario
 
 MODEL_GEMINI = "gemini-2.5-flash"
 TEMPERATURE = 0.2
@@ -17,9 +19,8 @@ OPENAIkey = os.getenv("OPENAI_API_KEY")
 GEMINIkey = os.getenv("GOOGLE_API_KEY")
 
 if not OPENAIkey and not GEMINIkey:
-    print("ключів нема, ребята. ші не працює щас")
-    exit(1)
-
+    print("❌ Фатальна помилка: ключів нема, обидві ШІ мертві. Розходимось.")
+    sys.exit(1)
 
 if GEMINIkey:
     genai.configure(api_key=GEMINIkey)
@@ -31,8 +32,8 @@ if OPENAIkey:
 
 def generate_dialog(prompt_instruction: str) -> str:
     """
-  спочатку пробуємо опенаі, якщо падає або немає кредитів - геміні.
-  """
+    Спочатку смикаємо OpenAI, якщо падає або грошей нуль - перемикаємось на Gemini.
+    """
     if OPENAIkey:
         try:
             response = openai_client.chat.completions.create(
@@ -42,7 +43,7 @@ def generate_dialog(prompt_instruction: str) -> str:
             )
             return response.choices[0].message.content.strip()
         except Exception as e:
-            print(f"⚠ Опенаі відвалився: {e}. Переходимо на Gemini...")
+            print(f"⚠️ OpenAI відвалився ({e}). Ну і фіг з ним, тягнемо Gemini...")
 
     if GEMINIkey:
         while True:
@@ -56,28 +57,37 @@ def generate_dialog(prompt_instruction: str) -> str:
                 error_msg = str(e)
                 # Якщо це помилка ліміту (429)
                 if "429" in error_msg or "quota" in error_msg.lower():
-                    print(f"Гугл виставив блок (Помилка 429)! Спимо 60 секунд і добиваємо цей же сценарій...")
+                    print(f"🛑 Гугл душить лімітами (429)! Спимо 60 секунд і добиваємо цей же сценарій...")
                     time.sleep(60)  # Спимо хвилину і цикл while спробує ЗНОВУ
                 else:
                     # Якщо це якась інша помилка (наприклад, інтернет відпав)
-                    print(f"Невідома помилка Gemini: {e}")
-                    exit(1)
+                    print(f"❌ Gemini впав з невідомою помилкою: {e}. Працювати так неможливо, виходимо.")
+                    sys.exit(1)
 
-    return "обидві ші недоступні."
+    print("обидві ШІ недоступні, далі ловити нічого.")
+    sys.exit(1)
 
 
 def main():
     results = []
+    TOTAL_DIALOGS = 20  # Жорсткий ліміт на день, щоб не зловити бан по API
 
-    for scenario in SCENARIOS:
+    for i in range(1, TOTAL_DIALOGS + 1):
+        # Щоразу генеруємо новий унікальний сценарій через функцію
+        scenario = create_random_scenario(i)
         scenario_id = scenario.get("id")
+
         if not scenario.get("prompt_instruction"):
-            print(f"скіпаєм {scenario_id} бо там нема промпта.")
+            print(f"⏩ Скіпаєм ID {scenario_id} - там пусто, нема промпта.")
             continue
 
         try:
-            print(f"генерую сценарій {scenario_id} ...")
+            print(f"⏳ Генерую сценарій {scenario_id} з 20 (Інтент: {scenario.get('intent')}) ...")
             dialog = generate_dialog(scenario["prompt_instruction"])
+
+            if not dialog:
+                print(f"❌ ШІ повернула порожню відповідь на ID {scenario_id}. Виходимо.")
+                sys.exit(1)
 
             results.append({
                 "id": scenario_id,
@@ -85,19 +95,20 @@ def main():
                 "intent": scenario.get("intent"),
                 "expected_satisfaction": scenario.get("expected_satisfaction"),
                 "expected_quality_score": scenario.get("expected_quality_score"),
-                "expected_mistakes": scenario.get("expected_mistakes"),
+                "agent_mistakes": scenario.get("agent_mistakes", []),  # Ключ під вимоги ТЗ
                 "dialog": dialog
             })
+            print(f"✅ Сценарій {scenario_id} успішно згенеровано.")
             time.sleep(5)  # Нормальна пауза між успішними генераціями
 
         except Exception as e:
-            print(f"сценарій {scenario_id} фігня: {e}")
+            print(f"❌ Сценарій {scenario_id} пішов по одному місцю: {e}")
             continue
 
     with open("raw_data.json", "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=4)
 
-    print("raw_data.json збережена")
+    print(f"🎉 Готово! raw_data.json збережена. Успішно згенеровано унікальних діалогів: {len(results)}")
 
 
 if __name__ == "__main__":
