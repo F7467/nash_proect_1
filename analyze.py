@@ -68,7 +68,7 @@ def analyze_all_dialogues():
             "intent": "payment_issue" або "technical_error" або "account_access" або "tariff_question" або "refund_request" або "other",
             "satisfaction": "satisfied" або "neutral" або "unsatisfied",
             "quality_score": оцінка від 1 до 5 (числом),
-            "expected_mistakes": ["incorrect_info", "ignored_question", "hallucinated_info", "robotic_tone", "rude_tone", "too_short_reply", "passive_agression", "jargon_overload", "contradictory_info", "outdated_info", "overly_verbose", "assumption_based_reply", "unnecessary_escalation", "no_resolution", "long_response_time"] (якщо немає - порожній список [])
+            "expected_mistakes": ["incorrect_info", "ignored_question", "hallucinated_info", "robotic_tone", "rude_tone", "too_short_reply", "passive_agression", "jargon_overload", "contradictory_info", "outdated_info", "overly_verbose", "assumption_based_reply", "unnecessary_escalation", "no_resolution", "long_response_time", "data_privacy_violation"] (якщо немає - порожній список [])
         }}
         """
         while True:
