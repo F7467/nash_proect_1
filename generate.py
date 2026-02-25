@@ -2,10 +2,11 @@ import os
 import json
 import time
 from dotenv import load_dotenv
-from prompts import SCENARIOS
 
 from openai import OpenAI
 import google.generativeai as genai
+
+from prompts import SCENARIOS
 
 MODEL_GEMINI = "gemini-2.5-flash"
 TEMPERATURE = 0.2
@@ -17,7 +18,7 @@ GEMINIkey = os.getenv("GOOGLE_API_KEY")
 
 if not OPENAIkey and not GEMINIkey:
     print("ключів нема, ребята. ші не працює щас")
-    #exit()
+    exit(1)
 
 
 if GEMINIkey:
@@ -41,10 +42,10 @@ def generate_dialog(prompt_instruction: str) -> str:
             )
             return response.choices[0].message.content.strip()
         except Exception as e:
-            print(f"⚠️ Опенаі відвалився: {e}. Переходимо на Gemini...")
+            print(f"⚠ Опенаі відвалився: {e}. Переходимо на Gemini...")
 
     if GEMINIkey:
-        while True:  # БРОНЕБІЙНИЙ ЦИКЛ! Буде стукати, поки не отримає результат
+        while True:
             try:
                 response = gemini_model.generate_content(
                     prompt_instruction,
@@ -55,12 +56,12 @@ def generate_dialog(prompt_instruction: str) -> str:
                 error_msg = str(e)
                 # Якщо це помилка ліміту (429)
                 if "429" in error_msg or "quota" in error_msg.lower():
-                    print(f"🛑 Гугл виставив блок (Помилка 429)! Спимо 60 секунд і добиваємо цей же сценарій...")
+                    print(f"Гугл виставив блок (Помилка 429)! Спимо 60 секунд і добиваємо цей же сценарій...")
                     time.sleep(60)  # Спимо хвилину і цикл while спробує ЗНОВУ
                 else:
                     # Якщо це якась інша помилка (наприклад, інтернет відпав)
-                    print(f"❌ Невідома помилка Gemini: {e}")
-                    return "не вдалось згенерувати діалог"
+                    print(f"Невідома помилка Gemini: {e}")
+                    exit(1)
 
     return "обидві ші недоступні."
 
