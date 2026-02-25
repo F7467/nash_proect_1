@@ -3,20 +3,28 @@ import json
 import time
 from dotenv import load_dotenv
 import google.generativeai as genai
+from prompts import SCENARIOS
+
+from openai import OpenAI
+
+from generate import OPENAIkey
+MODEL_GEMINI = "gemini-2.5-flash"
 
 load_dotenv()
 GEMINIkey = os.getenv("GOOGLE_API_KEY")
+OPENAIkey = os.getenv("OPENAI_API_KEY")
 
 if not GEMINIkey:
     print(" Ключі відсутні! Завершую роботу.")
-    exit()
+    #exit()
 
 genai.configure(api_key=GEMINIkey)
 
 model = genai.GenerativeModel("gemini-2.5-flash")
 
 if not OPENAIkey and not GEMINIkey:
-    print("ключів нема, ребята. ші не працює щас")
+    print("FATAL ERROR: ДОСТУП ДО ДВУХ ШІ ЗАРАЗ ВІДСУТНІЙ!")
+    exit()
 
 if GEMINIkey:
     genai.configure(api_key=GEMINIkey)
