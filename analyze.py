@@ -133,7 +133,7 @@ def compare_results(analyzed_file="analyzed_data.json", prompts_file="prompts.js
         expected_result = prompts_dict.get(scenario_id, {}).get("expected", {})
         
         if not expected_result:
-            print(f"⚠️ Не знайдено еталонних даних (очікувань) для ID {scenario_id}")
+            print(f" Не знайдено еталонних даних (очікувань) для ID {scenario_id}")
             continue
 
         keys_to_compare = ["intent", "satisfaction", "quality_score"]
