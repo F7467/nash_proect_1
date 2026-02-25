@@ -17,9 +17,6 @@ GEMINIkey = os.getenv("GOOGLE_API_KEY")
 
 if not OPENAIkey and not GEMINIkey:
     print("ключів нема, ребята. ші не працює щас")
-    #exit()
-
-
 if GEMINIkey:
     genai.configure(api_key=GEMINIkey)
     gemini_model = genai.GenerativeModel(MODEL_GEMINI)
