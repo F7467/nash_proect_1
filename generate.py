@@ -17,7 +17,7 @@ GEMINIkey = os.getenv("GOOGLE_API_KEY")
 
 if not OPENAIkey and not GEMINIkey:
     print("ключів нема, ребята. ші не працює щас")
-    #exit()
+    exit()
 
 
 if GEMINIkey:
