@@ -68,8 +68,7 @@ def analyze_all_dialogues():
             "intent": "payment_issue" або "technical_error" або "account_access" або "tariff_question" або "refund_request" або "other",
             "satisfaction": "satisfied" або "neutral" або "unsatisfied",
             "quality_score": оцінка від 1 до 5 (числом),
-            "expected_mistakes": ["incorrect_info", "ignored_question", "hallucinated_info", "robotic_tone", "rude_tone", "too_short_reply", "passive_agression", "jargon_overload", "contradictory_info", "outdated_info", "overly_verbose", "assumption_based_reply", "unnecessary_escalation", "no_resolution", "long_response_time"] (якщо немає - порожній список []),
-            Кількість співпадінь очікувань з реальністю (intent, satisfaction, quality_score та expected_mistakes) - "expectation_reality_matches": число від 0 до 4 (кількість збігів між очікуваннями та реальністю)
+            "expected_mistakes": ["incorrect_info", "ignored_question", "hallucinated_info", "robotic_tone", "rude_tone", "too_short_reply", "passive_agression", "jargon_overload", "contradictory_info", "outdated_info", "overly_verbose", "assumption_based_reply", "unnecessary_escalation", "no_resolution", "long_response_time"] (якщо немає - порожній список [])
         }}
         """
         while True:
@@ -101,6 +100,83 @@ def analyze_all_dialogues():
         json.dump(analyzed_results, out, indent=4, ensure_ascii=False)
         print("\n УСІ ДАНІ УСПІШНО ПРОАНАЛІЗОВАНІ ТА ЗБЕРЕЖЕНІ В analyzed_data.json!")
 
+def compare_results(analyzed_file="analyzed_data.json", prompts_file="prompts.json", output_file="comparison_report.json"):
+    """
+    Порівнює результати ШІ з очікуваними (еталонними) даними.
+    """
+    print("\n Починаю порівняння з еталонними промптами...")
+    
+    try:
+        with open(analyzed_file, "r", encoding="utf-8") as f:
+            analyzed_data = json.load(f)
+        
+        with open(prompts_file, "r", encoding="utf-8") as f:
+            prompts_data = json.load(f)
+            
+    except FileNotFoundError as e:
+        print(f" Помилка завантаження файлів для порівняння: {e}")
+        return
+
+    prompts_dict = {item["id"]: item for item in prompts_data}
+    comparison_results = []
+    
+    total_matches = 0
+    total_fields_checked = 0
+
+    for item in analyzed_data:
+        scenario_id = item.get("id")
+        ai_result = item.get("ai_analysis", {})
+        
+        if "error" in ai_result:
+            continue
+
+        expected_result = prompts_dict.get(scenario_id, {}).get("expected", {})
+        
+        if not expected_result:
+            print(f"⚠️ Не знайдено еталонних даних (очікувань) для ID {scenario_id}")
+            continue
+
+        keys_to_compare = ["intent", "satisfaction", "quality_score"]
+        matches = 0
+        differences = {}
+
+        for key in keys_to_compare:
+            total_fields_checked += 1
+            if str(ai_result.get(key)) == str(expected_result.get(key)):
+                matches += 1
+                total_matches += 1
+            else:
+                differences[key] = {
+                    "expected": expected_result.get(key),
+                    "ai_got": ai_result.get(key)
+                }
+
+        total_fields_checked += 1
+        ai_mistakes = set(ai_result.get("expected_mistakes", []))
+        expected_mistakes = set(expected_result.get("expected_mistakes", []))
+        
+        if ai_mistakes == expected_mistakes:
+            matches += 1
+            total_matches += 1
+        else:
+            differences["expected_mistakes"] = {
+                "expected": list(expected_mistakes),
+                "ai_got": list(ai_mistakes)
+            }
+
+        comparison_results.append({
+            "id": scenario_id,
+            "expectation_reality_matches": matches,  
+            "differences": differences,
+            "is_perfect_match": matches == 4
+        })
+
+    with open(output_file, "w", encoding="utf-8") as out:
+        json.dump(comparison_results, out, indent=4, ensure_ascii=False)
+    
+    accuracy = (total_matches / total_fields_checked * 100) if total_fields_checked > 0 else 0
+    print(f" Порівняння завершено! Збережено у {output_file}.")
+    print(f" Загальна точність моделі: {accuracy:.2f}%")
 
 if __name__ == "__main__":
     analyze_all_dialogues()
