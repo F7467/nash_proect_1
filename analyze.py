@@ -8,7 +8,7 @@ load_dotenv()
 GEMINIkey = os.getenv("GOOGLE_API_KEY")
 
 if not GEMINIkey:
-    print("❌ Ключі відсутні! Завершую роботу.")
+    print(" Ключі відсутні! Завершую роботу.")
     exit()
 
 genai.configure(api_key=GEMINIkey)
@@ -29,12 +29,12 @@ def analyze_all_dialogues():
     try:
         with open("raw_data.json", "r", encoding="utf-8") as f:
             dataset = json.load(f)
-            print(f"📂 Знайдено {len(dataset)} діалогів для аналізу!")
+            print(f" Знайдено {len(dataset)} діалогів для аналізу!")
     except FileNotFoundError:
-        print("❌ Помилка: Файл raw_data.json не знайдено!")
+        print(" Помилка: Файл raw_data.json не знайдено!")
         return
     except json.JSONDecodeError:
-        print("❌ Помилка: raw_data.json пошкоджений або пустий.")
+        print(" Помилка: raw_data.json пошкоджений або пустий.")
         return
 
     analyzed_results = []
@@ -44,10 +44,10 @@ def analyze_all_dialogues():
         dialog_text = item.get("dialog")
 
         if not dialog_text:
-            print(f"⚠️ Скіпаємо ID {scenario_id} - там немає тексту діалогу.")
+            print(f" Скіпаємо ID {scenario_id} - там немає тексту діалогу.")
             continue
 
-        print(f"🕵️‍♂️ Аналізую діалог ID {scenario_id}...")
+        print(f" Аналізую діалог ID {scenario_id}...")
 
         analysis_prompt = f"""
         Проаналізуй діалог між клієнтом та сапортом і виведи результат ТІЛЬКИ у форматі JSON.
@@ -74,7 +74,7 @@ def analyze_all_dialogues():
                 item["ai_analysis"] = parsed_analysis
                 analyzed_results.append(item)
 
-                print(f"✅ ID {scenario_id} успішно проаналізовано!")
+                print(f" ID {scenario_id} успішно проаналізовано!")
                 time.sleep(6) 
                 break  
 
@@ -91,7 +91,7 @@ def analyze_all_dialogues():
 
     with open("analyzed_data.json", "w", encoding="utf-8") as out:
         json.dump(analyzed_results, out, indent=4, ensure_ascii=False)
-        print("\n🎉 УСІ ДАНІ УСПІШНО ПРОАНАЛІЗОВАНІ ТА ЗБЕРЕЖЕНІ В analyzed_data.json!")
+        print("\n УСІ ДАНІ УСПІШНО ПРОАНАЛІЗОВАНІ ТА ЗБЕРЕЖЕНІ В analyzed_data.json!")
 
 
 if __name__ == "__main__":
