@@ -1,6 +1,6 @@
 import random
 
-# Щоб ШІ не писала зайвого сміття
+# щоб ШІ не писала зайвого сміття
 FORMATTING_RULE = """ЖОРСТКЕ ПРАВИЛО ФОРМАТУВАННЯ: Виведи СУВОРО ТІЛЬКИ репліки діалогу. Заборонено писати вступні фрази (типу "Ось діалог:"), заборонено писати висновки в кінці ("Результат:"), заборонено використовувати ремарки в дужках (типу "(роздратовано)"), заборонено використовувати списки. Тільки чистий текст у форматі Клієнт: ... Агент: ..."""
 
 INTENTS = {
@@ -117,9 +117,7 @@ AGENT_PERSONAS = [
 
 
 def create_random_scenario(scenario_id):
-    """
-    Генеруємо унікальний сценарій, міксуючи інтенти, клієнтів та агентів.
-    """
+
     intent = random.choice(list(INTENTS.keys()))
     context = random.choice(INTENTS[intent])
     client = random.choice(CLIENT_PERSONAS)
@@ -138,7 +136,7 @@ def create_random_scenario(scenario_id):
     if "депресивно" in client["desc"] and satisfaction == "unsatisfied":
         satisfaction = "neutral"
 
-    # Збираємо фінальний промпт
+    #фіналочка
     prompt_instruction = f"{FORMATTING_RULE}\n\nСгенеруй діалог на українській мові (6-8 речень).\n\n"
     prompt_instruction += f"ТЕМА: {intent}\n"
     prompt_instruction += f"КОНТЕКСТ: {context}\n\n"

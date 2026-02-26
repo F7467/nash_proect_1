@@ -56,7 +56,7 @@ def analyze_all_dialogues():
             try:
                 response = model.generate_content(
                     analysis_prompt,
-                    # Використовуємо response_mime_type для гарантованого JSON, temperature=0.1 для стабільності аналітики
+                    #response_mime_type для гарантованого JSON, temperature=0.1 для стабільності аналітики
                     generation_config={"response_mime_type": "application/json", "temperature": 0.1}
                 )
                 parsed_analysis = json.loads(response.text)
@@ -85,8 +85,7 @@ def analyze_all_dialogues():
 
 def compare_results():
     """
-    Порівнюємо результати ШІ з очікуваними (еталонними) даними,
-    які вже лежать у згенерованому датасеті.
+    Порівнюємо результати
     """
     print("\nПочинаємо порівняння...")
 
@@ -122,7 +121,7 @@ def compare_results():
         matches = 0
         differences = {}
 
-        # 1. Порівнюємо Intent
+        #  Intent
         total_fields_checked += 1
         if str(ai_intent) == str(expected_intent):
             matches += 1
@@ -130,7 +129,7 @@ def compare_results():
         else:
             differences["intent"] = {"expected": expected_intent, "ai_got": ai_intent}
 
-        # 2. Порівнюємо Satisfaction
+        #Satisfaction
         total_fields_checked += 1
         if str(ai_satisfaction) == str(expected_satisfaction):
             matches += 1
@@ -138,7 +137,7 @@ def compare_results():
         else:
             differences["satisfaction"] = {"expected": expected_satisfaction, "ai_got": ai_satisfaction}
 
-        # 3. Порівнюємо Quality Score
+        # Quality Score
         total_fields_checked += 1
         if str(ai_quality_score) == str(expected_quality_score):
             matches += 1
@@ -146,7 +145,7 @@ def compare_results():
         else:
             differences["quality_score"] = {"expected": expected_quality_score, "ai_got": ai_quality_score}
 
-        # 4. Порівнюємо Agent Mistakes
+        # Agent Mistakes
         total_fields_checked += 1
         if ai_mistakes == expected_mistakes:
             matches += 1
