@@ -41,7 +41,8 @@
 
 Перед початком переконайтеся, що у вас встановлені:
 * **Git** — [завантажити](https://git-scm.com/)
-* **Python** — [завантажити](https://www.python.org/).  
+* **Python** — [завантажити](https://www.python.org/).
+
 *Опціонально*:
 * **Docker** — [завантажити](https://www.docker.com/)
 
