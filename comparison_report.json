@@ -1,0 +1,430 @@
+[
+    {
+        "id": 1,
+        "expectation_reality_matches": 2,
+        "differences": {
+            "satisfaction": {
+                "expected": "neutral",
+                "ai_got": "unsatisfied"
+            },
+            "agent_mistakes": {
+                "expected": [
+                    "no_resolution",
+                    "ignored_question",
+                    "robotic_tone"
+                ],
+                "ai_got": [
+                    "no_resolution",
+                    "assumption_based_reply",
+                    "ignored_question",
+                    "robotic_tone"
+                ]
+            }
+        },
+        "is_perfect_match": false
+    },
+    {
+        "id": 2,
+        "expectation_reality_matches": 3,
+        "differences": {
+            "agent_mistakes": {
+                "expected": [
+                    "incorrect_info",
+                    "no_resolution",
+                    "data_privacy_violation"
+                ],
+                "ai_got": [
+                    "incorrect_info",
+                    "unnecessary_escalation",
+                    "no_resolution",
+                    "data_privacy_violation",
+                    "rude_tone",
+                    "ignored_question"
+                ]
+            }
+        },
+        "is_perfect_match": false
+    },
+    {
+        "id": 3,
+        "expectation_reality_matches": 2,
+        "differences": {
+            "quality_score": {
+                "expected": 2,
+                "ai_got": 1
+            },
+            "agent_mistakes": {
+                "expected": [
+                    "outdated_info",
+                    "no_resolution",
+                    "overly_verbose",
+                    "contradictory_info"
+                ],
+                "ai_got": [
+                    "no_resolution",
+                    "assumption_based_reply",
+                    "overly_verbose",
+                    "passive_agression",
+                    "jargon_overload",
+                    "ignored_question",
+                    "robotic_tone"
+                ]
+            }
+        },
+        "is_perfect_match": false
+    },
+    {
+        "id": 4,
+        "expectation_reality_matches": 3,
+        "differences": {
+            "agent_mistakes": {
+                "expected": [
+                    "no_resolution",
+                    "unnecessary_escalation",
+                    "passive_aggression",
+                    "jargon_overload",
+                    "rude_tone"
+                ],
+                "ai_got": [
+                    "jargon_overload",
+                    "no_resolution",
+                    "unnecessary_escalation",
+                    "robotic_tone"
+                ]
+            }
+        },
+        "is_perfect_match": false
+    },
+    {
+        "id": 5,
+        "expectation_reality_matches": 3,
+        "differences": {
+            "agent_mistakes": {
+                "expected": [
+                    "incorrect_info",
+                    "no_resolution",
+                    "data_privacy_violation"
+                ],
+                "ai_got": [
+                    "incorrect_info",
+                    "unnecessary_escalation",
+                    "no_resolution",
+                    "data_privacy_violation",
+                    "ignored_question"
+                ]
+            }
+        },
+        "is_perfect_match": false
+    },
+    {
+        "id": 6,
+        "expectation_reality_matches": 2,
+        "differences": {
+            "intent": {
+                "expected": "tariff_question",
+                "ai_got": "technical_error"
+            },
+            "agent_mistakes": {
+                "expected": [
+                    "hallucinated_info",
+                    "incorrect_info",
+                    "no_resolution",
+                    "assumption_based_reply"
+                ],
+                "ai_got": [
+                    "incorrect_info",
+                    "no_resolution",
+                    "assumption_based_reply",
+                    "ignored_question",
+                    "rude_tone"
+                ]
+            }
+        },
+        "is_perfect_match": false
+    },
+    {
+        "id": 7,
+        "expectation_reality_matches": 1,
+        "differences": {
+            "satisfaction": {
+                "expected": "neutral",
+                "ai_got": "unsatisfied"
+            },
+            "quality_score": {
+                "expected": 3,
+                "ai_got": 4
+            },
+            "agent_mistakes": {
+                "expected": [
+                    "robotic_tone"
+                ],
+                "ai_got": []
+            }
+        },
+        "is_perfect_match": false
+    },
+    {
+        "id": 8,
+        "expectation_reality_matches": 4,
+        "differences": {},
+        "is_perfect_match": true
+    },
+    {
+        "id": 9,
+        "expectation_reality_matches": 2,
+        "differences": {
+            "satisfaction": {
+                "expected": "neutral",
+                "ai_got": "unsatisfied"
+            },
+            "agent_mistakes": {
+                "expected": [
+                    "incorrect_info",
+                    "no_resolution",
+                    "data_privacy_violation"
+                ],
+                "ai_got": [
+                    "incorrect_info",
+                    "no_resolution",
+                    "data_privacy_violation",
+                    "ignored_question"
+                ]
+            }
+        },
+        "is_perfect_match": false
+    },
+    {
+        "id": 10,
+        "expectation_reality_matches": 3,
+        "differences": {
+            "agent_mistakes": {
+                "expected": [
+                    "hallucinated_info",
+                    "incorrect_info",
+                    "no_resolution",
+                    "assumption_based_reply"
+                ],
+                "ai_got": [
+                    "incorrect_info",
+                    "no_resolution",
+                    "unnecessary_escalation",
+                    "assumption_based_reply",
+                    "hallucinated_info",
+                    "ignored_question",
+                    "rude_tone"
+                ]
+            }
+        },
+        "is_perfect_match": false
+    },
+    {
+        "id": 11,
+        "expectation_reality_matches": 2,
+        "differences": {
+            "quality_score": {
+                "expected": 1,
+                "ai_got": 2
+            },
+            "agent_mistakes": {
+                "expected": [
+                    "no_resolution",
+                    "unnecessary_escalation",
+                    "passive_aggression",
+                    "jargon_overload",
+                    "rude_tone"
+                ],
+                "ai_got": [
+                    "no_resolution",
+                    "unnecessary_escalation",
+                    "jargon_overload",
+                    "ignored_question",
+                    "robotic_tone"
+                ]
+            }
+        },
+        "is_perfect_match": false
+    },
+    {
+        "id": 12,
+        "expectation_reality_matches": 1,
+        "differences": {
+            "satisfaction": {
+                "expected": "neutral",
+                "ai_got": "unsatisfied"
+            },
+            "quality_score": {
+                "expected": 3,
+                "ai_got": 2
+            },
+            "agent_mistakes": {
+                "expected": [
+                    "robotic_tone"
+                ],
+                "ai_got": [
+                    "no_resolution",
+                    "assumption_based_reply",
+                    "ignored_question"
+                ]
+            }
+        },
+        "is_perfect_match": false
+    },
+    {
+        "id": 13,
+        "expectation_reality_matches": 3,
+        "differences": {
+            "agent_mistakes": {
+                "expected": [
+                    "incorrect_info",
+                    "no_resolution",
+                    "data_privacy_violation"
+                ],
+                "ai_got": [
+                    "incorrect_info",
+                    "no_resolution",
+                    "data_privacy_violation",
+                    "passive_agression"
+                ]
+            }
+        },
+        "is_perfect_match": false
+    },
+    {
+        "id": 14,
+        "expectation_reality_matches": 1,
+        "differences": {
+            "satisfaction": {
+                "expected": "neutral",
+                "ai_got": "unsatisfied"
+            },
+            "quality_score": {
+                "expected": 3,
+                "ai_got": 4
+            },
+            "agent_mistakes": {
+                "expected": [
+                    "robotic_tone"
+                ],
+                "ai_got": []
+            }
+        },
+        "is_perfect_match": false
+    },
+    {
+        "id": 15,
+        "expectation_reality_matches": 2,
+        "differences": {
+            "quality_score": {
+                "expected": 3,
+                "ai_got": 4
+            },
+            "agent_mistakes": {
+                "expected": [
+                    "robotic_tone"
+                ],
+                "ai_got": []
+            }
+        },
+        "is_perfect_match": false
+    },
+    {
+        "id": 16,
+        "expectation_reality_matches": 1,
+        "differences": {
+            "satisfaction": {
+                "expected": "neutral",
+                "ai_got": "unsatisfied"
+            },
+            "quality_score": {
+                "expected": 3,
+                "ai_got": 4
+            },
+            "agent_mistakes": {
+                "expected": [
+                    "robotic_tone"
+                ],
+                "ai_got": []
+            }
+        },
+        "is_perfect_match": false
+    },
+    {
+        "id": 17,
+        "expectation_reality_matches": 4,
+        "differences": {},
+        "is_perfect_match": true
+    },
+    {
+        "id": 18,
+        "expectation_reality_matches": 3,
+        "differences": {
+            "agent_mistakes": {
+                "expected": [
+                    "no_resolution",
+                    "ignored_question",
+                    "robotic_tone"
+                ],
+                "ai_got": [
+                    "no_resolution",
+                    "assumption_based_reply",
+                    "contradictory_info",
+                    "ignored_question",
+                    "robotic_tone"
+                ]
+            }
+        },
+        "is_perfect_match": false
+    },
+    {
+        "id": 19,
+        "expectation_reality_matches": 1,
+        "differences": {
+            "intent": {
+                "expected": "tariff_question",
+                "ai_got": "technical_error"
+            },
+            "quality_score": {
+                "expected": 2,
+                "ai_got": 1
+            },
+            "agent_mistakes": {
+                "expected": [
+                    "outdated_info",
+                    "no_resolution",
+                    "overly_verbose",
+                    "contradictory_info"
+                ],
+                "ai_got": [
+                    "no_resolution",
+                    "assumption_based_reply",
+                    "ignored_question",
+                    "robotic_tone"
+                ]
+            }
+        },
+        "is_perfect_match": false
+    },
+    {
+        "id": 20,
+        "expectation_reality_matches": 3,
+        "differences": {
+            "agent_mistakes": {
+                "expected": [
+                    "hallucinated_info",
+                    "incorrect_info",
+                    "no_resolution",
+                    "assumption_based_reply"
+                ],
+                "ai_got": [
+                    "incorrect_info",
+                    "no_resolution",
+                    "data_privacy_violation",
+                    "ignored_question",
+                    "passive_agression",
+                    "rude_tone"
+                ]
+            }
+        },
+        "is_perfect_match": false
+    }
+]

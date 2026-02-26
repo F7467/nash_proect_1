@@ -1,6 +1,3 @@
 .env
 .venv/
 __pycache__/
-raw_data.json
-analyzed_data.json
-comparison_report.json
