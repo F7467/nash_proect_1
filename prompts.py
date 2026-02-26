@@ -1,9 +1,8 @@
 import random
 
-# Той самий залізобетонний рядок форматування, щоб ШІ не писала зайвого сміття
+# Щоб ШІ не писала зайвого сміття
 FORMATTING_RULE = """ЖОРСТКЕ ПРАВИЛО ФОРМАТУВАННЯ: Виведи СУВОРО ТІЛЬКИ репліки діалогу. Заборонено писати вступні фрази (типу "Ось діалог:"), заборонено писати висновки в кінці ("Результат:"), заборонено використовувати ремарки в дужках (типу "(роздратовано)"), заборонено використовувати списки. Тільки чистий текст у форматі Клієнт: ... Агент: ..."""
 
-# 1. КОНТЕКСТИ (Деталізовані з твоїх промптів)
 INTENTS = {
     "payment_issue": [
         "У клієнта виникає помилка при спробі оплати місячної підписки.",
@@ -18,7 +17,7 @@ INTENTS = {
     "account_access": [
         "Користувач забув пароль і не може його відновити.",
         "Акаунт зламали, змінили дані (клієнт боїться за витік інфи).",
-        "Проблеми з 2FA (не приходить СМС або код автентифікатора).",
+        "Проблеми з 2FA (не приходить смс або код автентифікатора).",
         "Профіль заблоковано системою без очевидних причин."
     ],
     "tariff_question": [
@@ -33,7 +32,6 @@ INTENTS = {
     ]
 }
 
-# 2. ПОРТРЕТИ КЛІЄНТІВ (Усі твої типажі)
 CLIENT_PERSONAS = [
     {
         "desc": "Пояснює проблему абсолютно спокійно і культурно. Викладає чіткі факти та старається детально пояснити суть своєї проблеми.",
@@ -72,7 +70,6 @@ CLIENT_PERSONAS = [
     }
 ]
 
-# 3. ПОРТРЕТИ АГЕНТІВ (Усі твої косяки та ідеали)
 AGENT_PERSONAS = [
     {
         "score": 5,
@@ -121,15 +118,13 @@ AGENT_PERSONAS = [
 
 def create_random_scenario(scenario_id):
     """
-    Генерує унікальний сценарій, міксуючи інтенти, клієнтів та агентів.
+    Генеруємо унікальний сценарій, міксуючи інтенти, клієнтів та агентів.
     """
-    # Рандомізуємо складові
     intent = random.choice(list(INTENTS.keys()))
     context = random.choice(INTENTS[intent])
     client = random.choice(CLIENT_PERSONAS)
     agent = random.choice(AGENT_PERSONAS)
 
-    # Визначаємо Satisfaction на основі логіки
     if agent["score"] == 5:
         satisfaction = "satisfied"
         client_ending = client["reaction_success"]
@@ -140,11 +135,10 @@ def create_random_scenario(scenario_id):
         satisfaction = "unsatisfied"
         client_ending = client["reaction_fail"]
 
-    # Специфічний костиль: якщо клієнт депресивний, він може залишитись "neutral" навіть при поганому агенті
     if "депресивно" in client["desc"] and satisfaction == "unsatisfied":
         satisfaction = "neutral"
 
-        # Збираємо фінальний промпт
+    # Збираємо фінальний промпт
     prompt_instruction = f"{FORMATTING_RULE}\n\nСгенеруй діалог на українській мові (6-8 речень).\n\n"
     prompt_instruction += f"ТЕМА: {intent}\n"
     prompt_instruction += f"КОНТЕКСТ: {context}\n\n"
@@ -152,8 +146,7 @@ def create_random_scenario(scenario_id):
     prompt_instruction += f"АГЕНТ: {agent['desc']}\n\n"
     prompt_instruction += f"КЛІЄНТ (РЕАКЦІЯ НА ДІЇ АГЕНТА): {client_ending}\n\n"
     prompt_instruction += f"РЕЗУЛЬТАТ: {agent['resolution']} Клієнт наприкінці залишається {satisfaction}."
-
-    # Повертаємо словник. УВАГА: ключ "agent_mistakes" тепер правильний по ТЗ!
+    
     return {
         "id": scenario_id,
         "scenario_name": f"rand_{intent}_{scenario_id}",
