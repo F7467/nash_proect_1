@@ -9,7 +9,7 @@ load_dotenv()
 GEMINIkey = os.getenv("GOOGLE_API_KEY")
 
 if not GEMINIkey:
-    print("❌ Ключа Gemini немає. Аналізувати нічим. Завершую роботу.")
+    print("Ключа Gemini немає. Аналізувати нічим. Завершую роботу.")
     sys.exit(1)
 
 # Налаштовуємо модель
@@ -21,9 +21,9 @@ def analyze_all_dialogues():
     try:
         with open("raw_data.json", "r", encoding="utf-8") as f:
             dataset = json.load(f)
-            print(f"✅ Знайдено {len(dataset)} діалогів для аналізу. Погнали!")
+            print(f"Знайдено {len(dataset)} діалогів для аналізу. Опрацьовуємо...")
     except Exception as e:
-        print(f"❌ Помилка завантаження raw_data.json: {e}")
+        print(f"Помилка завантаження raw_data.json ({e}).")
         sys.exit(1)
 
     analyzed_results = []
@@ -33,12 +33,11 @@ def analyze_all_dialogues():
         dialog_text = item.get("dialog")
 
         if not dialog_text:
-            print(f"⏩ Скіпаємо ID {scenario_id} - тексту діалогу нема.")
+            print(f"Пропускаємо {scenario_id} - тексту діалогу нема.")
             continue
 
-        print(f"⏳ Аналізую діалог ID {scenario_id}...")
+        print(f"Аналізуємо діалог {scenario_id}...")
 
-        # Оновлений промпт! Чітко вимагаємо agent_mistakes за вимогами ТЗ.
         analysis_prompt = f"""
         Проаналізуй діалог між клієнтом та сапортом і виведи результат ТІЛЬКИ у форматі JSON.
 
@@ -64,14 +63,14 @@ def analyze_all_dialogues():
                 item["ai_analysis"] = parsed_analysis
                 analyzed_results.append(item)
 
-                print(f"✅ ID {scenario_id} розкладено по поличках!")
-                time.sleep(6)  # Пауза між запитами, щоб Гугл не забанив
+                print(f"ID {scenario_id} оброоблено.")
+                time.sleep(6)
                 break
 
             except Exception as e:
                 error_msg = str(e)
                 if "429" in error_msg or "quota" in error_msg.lower():
-                    print(f"🛑 Гугл виставив блок (429)! Спимо 60 секунд і добиваємо ID {scenario_id}...")
+                    print(f"Гугл виставив блок (429)! Спимо 60 секунд і добиваємо ID {scenario_id}...")
                     time.sleep(60)
                 else:
                     print(f"❌ Критична помилка на ID {scenario_id}: {e}")
