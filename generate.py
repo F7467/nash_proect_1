@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import google.generativeai as genai
 
-# УВАГА: імпортуємо функцію генерації, а не статичний список!
 from prompts import create_random_scenario
 
 MODEL_GEMINI = "gemini-2.5-flash"
@@ -19,7 +18,7 @@ OPENAIkey = os.getenv("OPENAI_API_KEY")
 GEMINIkey = os.getenv("GOOGLE_API_KEY")
 
 if not OPENAIkey and not GEMINIkey:
-    print("❌ Фатальна помилка: ключів нема, обидві ШІ мертві. Розходимось.")
+    print("Немає ключів для OpenAI і Gemini.")
     sys.exit(1)
 
 if GEMINIkey:
@@ -31,9 +30,7 @@ if OPENAIkey:
 
 
 def generate_dialog(prompt_instruction: str) -> str:
-    """
-    Спочатку смикаємо OpenAI, якщо падає або грошей нуль - перемикаємось на Gemini.
-    """
+    """ Використовуємо OpenAI. """
     if OPENAIkey:
         try:
             response = openai_client.chat.completions.create(
@@ -43,7 +40,7 @@ def generate_dialog(prompt_instruction: str) -> str:
             )
             return response.choices[0].message.content.strip()
         except Exception as e:
-            print(f"⚠️ OpenAI відвалився ({e}). Ну і фіг з ним, тягнемо Gemini...")
+            print(f"Помилка в OpenAI ({e}). Використовуємо Gemini...")
 
     if GEMINIkey:
         while True:
@@ -55,34 +52,33 @@ def generate_dialog(prompt_instruction: str) -> str:
                 return response.text.strip()
             except Exception as e:
                 error_msg = str(e)
-                # Якщо це помилка ліміту (429)
+                # помилка ліміту (429)
                 if "429" in error_msg or "quota" in error_msg.lower():
-                    print(f"🛑 Гугл душить лімітами (429)! Спимо 60 секунд і добиваємо цей же сценарій...")
-                    time.sleep(60)  # Спимо хвилину і цикл while спробує ЗНОВУ
+                    print(f"Досягнено ліміту (429)! Чекаємо 60 секунд і надсилаємо цей же сценарій...")
+                    time.sleep(60)
                 else:
-                    # Якщо це якась інша помилка (наприклад, інтернет відпав)
-                    print(f"❌ Gemini впав з невідомою помилкою: {e}. Працювати так неможливо, виходимо.")
+                    # інша помилка (наприклад, інтернет відпав)
+                    print(f"Помилка в Gemini ({e}). Не вдалося згенерувати діалог.")
                     sys.exit(1)
 
-    print("обидві ШІ недоступні, далі ловити нічого.")
+    print("Обидві ШІ недоступні.")
     sys.exit(1)
 
 
 def main():
     results = []
-    TOTAL_DIALOGS = 20  # Жорсткий ліміт на день, щоб не зловити бан по API
+    TOTAL_DIALOGS = 20  # ліміт на день, щоб не зловити бан по API
 
     for i in range(1, TOTAL_DIALOGS + 1):
-        # Щоразу генеруємо новий унікальний сценарій через функцію
         scenario = create_random_scenario(i)
         scenario_id = scenario.get("id")
 
         if not scenario.get("prompt_instruction"):
-            print(f"⏩ Скіпаєм ID {scenario_id} - там пусто, нема промпта.")
+            print(f"Пропускаємо сценарій {scenario_id} (нема промпта).")
             continue
 
         try:
-            print(f"⏳ Генерую сценарій {scenario_id} з 20 (Інтент: {scenario.get('intent')}) ...")
+            print(f"Генеруємо сценарій {scenario_id} з 20 (Інтент: {scenario.get('intent')}) ...")
             dialog = generate_dialog(scenario["prompt_instruction"])
 
             if not dialog:
