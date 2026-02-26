@@ -9,7 +9,10 @@
 
 <div align="center"> 
   <a href="https://www.python.org/">
-    <img src="https://img.shields.io/badge/Python-3.x-blue?style=flat-square&logo=python&logoColor=white" alt="Python Version" />
+    <img src="https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=fff)">
+  </a>
+  <a>
+    <img src="https://img.shields.io/badge/Google%20Gemini-886FBF?logo=googlegemini&logoColor=fff">
   </a>
   </br>Даний проєкт автоматизує аналіз роботи служби підтримки. Він генерує датасет чатів між клієнтом та сапорт-агентом і оцінює якість роботи підтримки за допомогою LLM.
 </div>
@@ -17,28 +20,32 @@
 ## Table of contents
 
 * [Table of contents](#table-of-contents)
+* [Stack](#stack)
 * [Prerequisites](#prerequisites)
 * [Копіювання проєкту](#копіювання-проєкту)
 * [Встановлення та налаштування](#встановлення-та-налаштування)
 * [Запуск через Docker (Рекомендовано)](#запуск-через-docker-рекомендовано)
+* [Змінна кількості діалогів](#змінна-кількості-діалогів)
 * [Структура проєкту](#структура-проєкту)
 
-## 
+## Tech stack 🛠️
 
-Для того, щоб отримати копію цього проєкту на свій комп'ютер, виконайте команду в терміналі:
-```bash
-git clone https://github.com/ваш_username/nash_proect_1.git
-```
+* Python
+* Gemini API
+* JSON
+* Enviromental Variables (.env)
+* Docker (optional)
 
-## Prerequisites
+
+## Prerequisites 🗒️
 
 Перед початком переконайтеся, що у вас встановлені:
 * **Git** — [завантажити](https://git-scm.com/)
-* **Python** — [завантажити](https://www.python.org/)
-*Опціонально*
+* **Python** — [завантажити](https://www.python.org/).  
+*Опціонально*:
 * **Docker** — [завантажити](https://www.docker.com/)
 
-## Копіювання проєкту
+## Копіювання проєкту 🖨️
 
 * В консолі пропишіть команду
 ```bash
@@ -49,14 +56,15 @@ git clone https://github.com/F7467/nash_proect_1.git
 cd nash_proect_1
 ```
 
-## Встановлення та налаштування
+## Встановлення та налаштування ⚙️
 
 0. **Налаштування API ключів**  
-Створіть файл `.env` у корені проєкту та додайте ваші API ключі
+Створіть файл `.env` (або приберіть `.example` з файлу `.env.example`) у корені проєкту та додайте ваші API ключі. 
 ```python
 OPENAI_API_KEY=ваш_openai_ключ
 GOOGLE_API_KEY=ваш_gemini_ключ
 ```
+> *ВАЖЛИВО*: переконайтеся, що навколо знаку «дорівнює» немає пробілів
 
 1. **Налаштуйте `venv` та акивуйте його**
 ```bash
@@ -78,12 +86,13 @@ pip install -r requirements.txt
 ```
 
 3. **Запустіть**  
-Скрипти запустятся послідовно
+Скрипти запустятся послідовно.
+> *ВАЖЛИВО*: generate.py ОБОВʼЯЗКОВО має запуститися та завершитися перед запуском analyze.py
 ```bash
 python generate.py && python analyze.py
 ```
 
-## Запуск через Docker (Рекомендовано)
+## Запуск через Docker 🐳 (Рекомендовано) 
 
 1. Зберіть образ
 ```bash
@@ -95,10 +104,21 @@ docker build -t ai-test-task .
 docker run --env-file .env -v $(pwd)/output:/app/output ai-test-task
 ```
 
-## Структура проєкту
+## Змінна кількості діалогів
+
+Ви можете налаштувати обсяг згенерованих даних у файлі `generate.py`
+* `TOTAL_DIALOGS` змінна, що визначає кількість діалогів що будуть згенеровані. За замовчуванням встановлено 20.
+* Як змінити:
+1. Відкрийте файл `generate.py`
+2. Перейдіть на `70` лайн коду
+3. Замініть число на потрібне
+
+> *ВАЖЛИВО*: збільшення кількості діалогів призведе до більшої витрати токенів API-ключів
+
+## Структура проєкту 🏗️
 
 * `generate.py`: Генератор діалогів. Створює вхідні дані для аналізу
 * `analyze.py`: Аналізатор діалогів. Проводить оцінку та формує звіт.
 * `prompts.py`: Логіка сценаріїв: типи клієнтів, поведінка агентів та інтенти.
-* `output/`: Директорія для результатів. Містить `raw_data.json`, `analyzed_data.json` та *фінальний* `comparison_report.json`.
+* `output/`: Директорія для результатів. Сюди зберігаються `raw_data.json`, `analyzed_data.json` та *фінальний* `comparison_report.json`.
 * `entrypoint.sh`: Скрипт автоматизації для Docker-контейнера.
