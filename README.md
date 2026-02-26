@@ -20,19 +20,19 @@
 ## Table of contents
 
 * [Table of contents](#table-of-contents)
-* [Tech stack](#stack)
+* [Tech stack](#tech-stack)
 * [Prerequisites](#prerequisites)
 * [Копіювання проєкту](#копіювання-проєкту)
 * [Встановлення та налаштування](#встановлення-та-налаштування)
 * [Запуск через Docker (Рекомендовано)](#запуск-через-docker-рекомендовано)
 * [Змінна кількості діалогів](#змінна-кількості-діалогів)
-* [Результати аналізу](#результати-аналізу-)
+* [Результати аналізу](#результати-аналізу)
 * [Структура проєкту](#структура-проєкту)
 
 ## Tech stack
 
 * Python
-* Gemini API
+* Gemini API/Open AI
 * JSON
 * Enviromental Variables (.env)
 * Docker (optional)
