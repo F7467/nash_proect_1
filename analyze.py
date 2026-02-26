@@ -19,7 +19,7 @@ model = genai.GenerativeModel("gemini-2.5-flash")
 
 def analyze_all_dialogues():
     try:
-        with open("raw_data.json", "r", encoding="utf-8") as f:
+        with open("output/raw_data.json", "r", encoding="utf-8") as f:
             dataset = json.load(f)
             print(f"Знайдено {len(dataset)} діалогів для аналізу. Опрацьовуємо...")
     except Exception as e:
@@ -78,7 +78,7 @@ def analyze_all_dialogues():
                     analyzed_results.append(item)
                     break
 
-    with open("analyzed_data.json", "w", encoding="utf-8") as out:
+    with open("output/analyzed_data.json", "w", encoding="utf-8") as out:
         json.dump(analyzed_results, out, indent=4, ensure_ascii=False)
         print("\nУсі дані успішно проаналізовані та збережені в analyzed_data.json!")
 
@@ -91,7 +91,7 @@ def compare_results():
     print("\nПочинаємо порівняння...")
 
     try:
-        with open("analyzed_data.json", "r", encoding="utf-8") as f:
+        with open("output/analyzed_data.json", "r", encoding="utf-8") as f:
             analyzed_data = json.load(f)
     except Exception as e:
         print(f"Не вдалось відкрити analyzed_data.json ({e})")
@@ -161,7 +161,7 @@ def compare_results():
             "is_perfect_match": matches == 4
         })
 
-    with open("comparison_report.json", "w", encoding="utf-8") as out:
+    with open("output/comparison_report.json", "w", encoding="utf-8") as out:
         json.dump(comparison_results, out, indent=4, ensure_ascii=False)
 
     accuracy = (total_matches / total_fields_checked * 100) if total_fields_checked > 0 else 0

@@ -68,6 +68,7 @@ def generate_dialog(prompt_instruction: str) -> str:
 def main():
     results = []
     TOTAL_DIALOGS = 20  # ліміт на день, щоб не зловити бан по API
+                        # README
 
     for i in range(1, TOTAL_DIALOGS + 1):
         scenario = create_random_scenario(i)
@@ -101,7 +102,7 @@ def main():
             print(f"Сценарій {scenario_id} звершився з помилкою ({e}).")
             continue
 
-    with open("raw_data.json", "w", encoding="utf-8") as f:
+    with open("output/raw_data.json", "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=4)
 
     print(f"Готово! raw_data.json збережена. Успішно згенеровано унікальних діалогів: {len(results)}")
