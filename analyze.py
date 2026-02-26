@@ -9,7 +9,7 @@ load_dotenv()
 GEMINIkey = os.getenv("GOOGLE_API_KEY")
 
 if not GEMINIkey:
-    print("Ключа Gemini немає. Аналізувати нічим. Завершую роботу.")
+    print("Ключа Gemini немає. Аналізувати нічим. Завершуємо роботу.")
     sys.exit(1)
 
 # Налаштовуємо модель
@@ -33,7 +33,7 @@ def analyze_all_dialogues():
         dialog_text = item.get("dialog")
 
         if not dialog_text:
-            print(f"Пропускаємо {scenario_id} - тексту діалогу нема.")
+            print(f"Пропускаємо {scenario_id} (тексту діалогу нема).")
             continue
 
         print(f"Аналізуємо діалог {scenario_id}...")
@@ -70,31 +70,31 @@ def analyze_all_dialogues():
             except Exception as e:
                 error_msg = str(e)
                 if "429" in error_msg or "quota" in error_msg.lower():
-                    print(f"Гугл виставив блок (429)! Спимо 60 секунд і добиваємо ID {scenario_id}...")
+                    print(f"Досягнено ліміту (429)! Чекаємо 60 секунд і надсилаємо {scenario_id}...")
                     time.sleep(60)
                 else:
-                    print(f"❌ Критична помилка на ID {scenario_id}: {e}")
+                    print(f"Критична помилка на ID {scenario_id} ({e})")
                     item["ai_analysis"] = {"error": str(e)}
                     analyzed_results.append(item)
                     break
 
     with open("analyzed_data.json", "w", encoding="utf-8") as out:
         json.dump(analyzed_results, out, indent=4, ensure_ascii=False)
-        print("\n📁 УСІ ДАНІ УСПІШНО ПРОАНАЛІЗОВАНІ ТА ЗБЕРЕЖЕНІ В analyzed_data.json!")
+        print("\nУсі дані успішно проаналізовані та збережені в analyzed_data.json!")
 
 
 def compare_results():
     """
-    Порівнює результати ШІ з очікуваними (еталонними) даними,
+    Порівнюємо результати ШІ з очікуваними (еталонними) даними,
     які вже лежать у згенерованому датасеті.
     """
-    print("\n⚖️ Починаю жорстке порівняння: очікування vs реальність (ШІ)...")
+    print("\nПочинаємо порівняння...")
 
     try:
         with open("analyzed_data.json", "r", encoding="utf-8") as f:
             analyzed_data = json.load(f)
     except Exception as e:
-        print(f"❌ Не можу відкрити analyzed_data.json: {e}")
+        print(f"Не вдалось відкрити analyzed_data.json ({e})")
         sys.exit(1)
 
     comparison_results = []
@@ -106,16 +106,14 @@ def compare_results():
         ai_result = item.get("ai_analysis", {})
 
         if "error" in ai_result:
-            print(f"⏩ Скіпаю порівняння для ID {scenario_id} через помилку аналізу.")
+            print(f"Пропускаємо порівняння для ID {scenario_id} через помилку аналізу.")
             continue
 
-        # Беремо очікування прямо з поточного об'єкта (вони були записані туди скриптом generate.py)
         expected_intent = item.get("intent")
         expected_satisfaction = item.get("expected_satisfaction")
         expected_quality_score = item.get("expected_quality_score")
         expected_mistakes = set(item.get("agent_mistakes", []))
 
-        # Беремо реальність (що нааналізувала ШІ)
         ai_intent = ai_result.get("intent")
         ai_satisfaction = ai_result.get("satisfaction")
         ai_quality_score = ai_result.get("quality_score")
@@ -167,11 +165,10 @@ def compare_results():
         json.dump(comparison_results, out, indent=4, ensure_ascii=False)
 
     accuracy = (total_matches / total_fields_checked * 100) if total_fields_checked > 0 else 0
-    print(f"📊 Порівняння завершено! Звіт збережено у comparison_report.json.")
-    print(f"🎯 Загальна точність аналізу ШІ: {accuracy:.2f}%")
+    print(f"Порівняння завершено! Звіт збережено у comparison_report.json.")
+    print(f"Загальна точність аналізу ШІ: {accuracy:.2f}%")
 
 
 if __name__ == "__main__":
-    # Запускаємо спочатку аналіз, потім відразу порівняння
     analyze_all_dialogues()
     compare_results()
