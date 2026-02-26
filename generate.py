@@ -78,7 +78,7 @@ def main():
             continue
 
         try:
-            print(f"Генеруємо сценарій {scenario_id} з 20 (Контекст: {scenario.get('intent')}) ...")
+            print(f"Генеруємо сценарій {scenario_id} з 20 (Інтент: {scenario.get('intent')}) ...")
             dialog = generate_dialog(scenario["prompt_instruction"])
 
             if not dialog:
