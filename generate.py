@@ -78,11 +78,11 @@ def main():
             continue
 
         try:
-            print(f"Генеруємо сценарій {scenario_id} з 20 (Інтент: {scenario.get('intent')}) ...")
+            print(f"Генеруємо сценарій {scenario_id} з 20 (Контекст: {scenario.get('intent')}) ...")
             dialog = generate_dialog(scenario["prompt_instruction"])
 
             if not dialog:
-                print(f"❌ ШІ повернула порожню відповідь на ID {scenario_id}. Виходимо.")
+                print(f"ШІ повернула порожню відповідь на сценарій {scenario_id}. Виходимо.")
                 sys.exit(1)
 
             results.append({
@@ -94,17 +94,17 @@ def main():
                 "agent_mistakes": scenario.get("agent_mistakes", []),  # Ключ під вимоги ТЗ
                 "dialog": dialog
             })
-            print(f"✅ Сценарій {scenario_id} успішно згенеровано.")
-            time.sleep(5)  # Нормальна пауза між успішними генераціями
+            print(f"Сценарій {scenario_id} успішно згенеровано.")
+            time.sleep(5)
 
         except Exception as e:
-            print(f"❌ Сценарій {scenario_id} пішов по одному місцю: {e}")
+            print(f"Сценарій {scenario_id} звершився з помилкою ({e}).")
             continue
 
     with open("raw_data.json", "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=4)
 
-    print(f"🎉 Готово! raw_data.json збережена. Успішно згенеровано унікальних діалогів: {len(results)}")
+    print(f"Готово! raw_data.json збережена. Успішно згенеровано унікальних діалогів: {len(results)}")
 
 
 if __name__ == "__main__":
