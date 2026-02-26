@@ -11,44 +11,92 @@
   <a href="https://www.python.org/">
     <img src="https://img.shields.io/badge/Python-3.x-blue?style=flat-square&logo=python&logoColor=white" alt="Python Version" />
   </a>
+  </br>Даний проєкт автоматизує аналіз роботи служби підтримки. Він генерує датасет чатів між клієнтом та сапорт-агентом і оцінює якість роботи підтримки за допомогою LLM.
 </div>
 
 ## Table of contents
-1. [Table of contents](#table-of-contents)
-2. [Prerequisites](#prerequisites)
-3. [Встановлення та налаштування](#встановлення-та-налаштування)
+
+* [Table of contents](#table-of-contents)
+* [Prerequisites](#prerequisites)
+* [Копіювання проєкту](#копіювання-проєкту)
+* [Встановлення та налаштування](#встановлення-та-налаштування)
+
+## 
+
+Для того, щоб отримати копію цього проєкту на свій комп'ютер, виконайте команду в терміналі:
+```bash
+git clone https://github.com/ваш_username/nash_proect_1.git
+```
 
 ## Prerequisites
+
 Перед початком переконайтеся, що у вас встановлені:
 * **Git** — [завантажити](https://git-scm.com/)
 * **Python** — [завантажити](https://www.python.org/)
+*Опціонально*
+* **Docker** — [завантажити](https://www.docker.com/)
 
-## Встановлення та налаштування
+## Копіювання проєкту
 
-0. **Відкрийте термінал або командний рядок (Terminal / CMD / PowerShell).**
-1. Зайдіть в папку проекту
+* В консолі пропишіть команду
+```bash
+git clone https://github.com/F7467/nash_proect_1.git
+```
+* Після чого перейдіть в папку проєкту
 ```bash
 cd nash_proect_1
 ```
-2. Оновіть всі файли.
-```bash
-git pull
+
+## Встановлення та налаштування
+
+0. **Налаштування API ключів**  
+Створіть файл `.env` у корені проєкту та додайте ваші API ключі
+```python
+OPENAI_API_KEY=ваш_openai_ключ
+GOOGLE_API_KEY=ваш_gemini_ключ
 ```
-3. Налаштуйте `venv`.
+
+1. **Налаштуйте `venv` та акивуйте його**
 ```bash
 python -m venv .venv
 ```
-4. Активуйте
-   * Windows (PowerShell): 
+
+* *Windows (PowerShell)*: 
    ```powershell
    .\.venv\Scripts\Activate.ps1
    ```
-   * Mac/Linux: 
+* *Mac/Linux*: 
    ```bash
    source .venv/bin/activate
    ```
-5. Встановіть необхідні бібліотеки
+
+2. **Встановіть необхідні бібліотеки**
 ```bash
 pip install -r requirements.txt
 ```
----
+
+3. **Запустіть**  
+Скрипти запустятся послідовно
+```bash
+python generate.py && python analyze.py
+```
+
+## Запуск через Docker (Рекомендовано)
+
+1. Зберіть образ
+```bash
+docker build -t ai-test-task .
+```
+
+2. Запустіть контейнер з виводом результатів
+```bash
+docker run --env-file .env -v $(pwd)/output:/app/output ai-test-task
+```
+
+## Структура проєкту
+
+* `generate.py`: Генератор діалогів. Створює вхідні дані для аналізу
+* `analyze.py`: Аналізатор діалогів. Проводить оцінку та формує звіт.
+* `prompts.py`: Логіка сценаріїв: типи клієнтів, поведінка агентів та інтенти.
+* `output/`: Директорія для результатів. Містить `raw_data.json`, `analyzed_data.json` та *фінальний* `comparison_report.json`.
+* `entrypoint.sh`: Скрипт автоматизації для Docker-контейнера.
